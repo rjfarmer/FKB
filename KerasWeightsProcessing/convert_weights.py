@@ -156,7 +156,10 @@ def h5_to_txt(weights_file_name, output_file_name=''):
         keras_version = weights_file.attrs['keras_version']
 
         if 'training_config' in weights_file.attrs:
-            training_config = weights_file.attrs['training_config'].decode('utf-8')
+            if hasattr(weights_file.attrs['training_config'],'decode'):
+                training_config = weights_file.attrs['training_config'].decode('utf-8')
+            else:
+                training_config = weights_file.attrs['training_config']
             training_config = training_config.replace('true','True')
             training_config = training_config.replace('false','False')
             training_config = training_config.replace('null','None')
@@ -169,7 +172,10 @@ def h5_to_txt(weights_file_name, output_file_name=''):
             learning_rate = 0.001
 
         # Decode using the utf-8 encoding; change values for eval
-        model_config = weights_file.attrs['model_config'].decode('utf-8')
+        if hasattr(weights_file.attrs['model_config'],'decode'):
+            model_config = weights_file.attrs['model_config'].decode('utf-8')
+        else:
+            model_config = weights_file.attrs['model_config']
         model_config = model_config.replace('true','True')
         model_config = model_config.replace('false','False')
         model_config = model_config.replace('null','None')
