@@ -80,6 +80,9 @@ contains
       case('linear')
         layer % activation => linear
         layer % activation_prime => linear_prime
+      case('elu')
+        layer % activation => elu
+        layer % activation_prime => elu_prime
       case default
         layer % activation => sigmoid
         layer % activation_prime => sigmoid_prime

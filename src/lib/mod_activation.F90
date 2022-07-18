@@ -16,6 +16,7 @@ module mod_activation
   public :: tanhf, tanh_prime
   public :: linear, linear_prime
   public :: leaky_relu, leaky_relu_prime
+  public :: elu, elu_prime
 
   interface
     pure function activation_function(x, alpha)
@@ -160,5 +161,29 @@ contains
     real(rk) :: res(size(x))
     res = 1 - tanh(x)**2
   end function tanh_prime
+
+  pure function elu(x, alpha) result(res)
+    ! Exponential Linear Unit activation function.
+    real(rk), intent(in) :: x(:)
+    real(rk), intent(in) :: alpha
+    real(rk) :: res(size(x))
+    where(x<0)
+      res = alpha * (exp(x) -1.0) 
+    elsewhere
+      res = x
+    end where
+  end function elu
+
+  pure function elu_prime(x, alpha) result(res)
+    ! First derivative of the Exponential Linear Unit activation function.
+    real(rk), intent(in) :: x(:)
+    real(rk), intent(in) :: alpha
+    real(rk) :: res(size(x))
+    where(x<0)
+      res = alpha * exp(x)
+    elsewhere
+      res = 1
+    end where
+  end function elu_prime
 
 end module mod_activation
